@@ -1,0 +1,544 @@
+---
+title: "Report 1.3: Empirical assesment of an *International Technological Subordination (ITS)*"
+author: "Rodrigo BR"
+date: "`r Sys.Date()`"
+format: 
+  docx:
+    reference-doc: template.docx
+fontsize: 11pt
+fontfamily: Calibri
+lineheight: "1.5"
+output: word_document
+bibliography: referencias.bib
+---
+
+
+```{r setup, include = FALSE}
+# Setup
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE, fig.width = 8, fig.height = 6)
+flextable::set_flextable_defaults(
+  font.size = 9, 
+  font.family = "Calibri", 
+  text.align = "center",
+  table.aling = "center",
+  padding.top = 1.5,
+  padding.bottom = 1.5,
+  pct_digits = 4,
+  decimal.mark = ".",
+  split = TRUE,
+  layout = "autofit",
+  border.color = "black"
+  )
+
+# Function to add breaks logic
+ add_breaks <- function(text, width = 50) {
+   sapply(text, function(x) {
+     paste(strwrap(x, width = width), collapse = "\n")
+   })
+ }
+
+# Cargar librerías y data
+
+library(pacman)
+p_load(tidyverse, knitr, flextable, ggplot2, brolgar, countrycode)
+
+```
+
+# Introduction to the empirical assesment of an *International Technological Subordination* (ITS)
+
+The concept of *International Technological Subordination* (ITS) is a theoretical framework that seeks to explain the hierarchical relation between countries in the Global Economy (GE), based on the control and ownership of technologies in key sectors of the global capitalist system. In this part, we aim to prove the empirical usefulness of this framework to select and interpret data that could reveal the relative position of a country in the GE with a focus on key Agricultural and Mining capital goods. For this purpose, and following the principles of parsimonia[^1] and accesibility of the data  gathered through internet sources -to provide an analytical framework easy to reproduce and test around the world-, we constructed a dataset that contains three major indicators:
+
+[^1]: That is, the idea that a model, theory or framework should be constructed and tested with the least amount of variables possible and still achieve the desired level of explanation. 
+
+1. Technological Dependency Ratio (TIDR) to be applied in the agriculture and mining sectors, as a first step to empirically assess the ITS in a global perspective. This ratio is built using a formula developed by the Food and Agriculture Organization (FAO) to characterize the dependency of a country on cereal imports, and is adapted to the construction of the TIDR for agriculture and mining capital goods such as machinery, teleoperation devices and related technologies.
+
+2. Count of internationalized patents[^2] in agriculture, mining and data processing technologies per year, as a proxy to measure the innovation and technology production of a country in the global economy (for a more detailed analysis of this use of patent data, see @patents2002). This indicator should allow to position a country in the global intellectual property system, and to identify the relative importance of its inventive activity in the sectors of interest. Data processing technologies patents are added to assess the current importance of the 4.0 industry in the global economy.
+
+[^2]: An *internationalized patent* is a patent that has been granted a family id in the international patent system, which basically means that it has been recognized as a patent in force globally. For a more detailed explanation of internationalization in the patent system and its analysis, see @martinez2010.
+
+3. Foreign Direct Investment (FDI) as percentage of Gross Capital Formation **in general**, as a proxy for the financial subordination of a country in the global economy. Data specifically for agriculture and mining sectors is not publicly available at the time in the data source used (United Nations Conference on Trade and Development - UNCTAD), so this indicator is used as a general proxy for the financial subordination of a country in the global economy. In future works that follow this path of research, the authors suggest to gather data specifically for the sectors of interest, so the financial subordination can be assessed in a more precise way.
+
+Therefore, the operationalization of the ITS in this report is as follows:
+
+```{r operationalization}
+
+# Data frame for the operationalization table
+operationalization <- data.frame(
+  Concept = "International Technological Subordination (ITS)",
+  Dimension = c("Logistical Subordination", 
+                "Technological Development Subordination", 
+                "Financial Subordination"),
+  Empirical_Proxy = c("Trade balance (imports - exports) of technified capital goods", 
+                      "Internationalized patents ownership (count)", 
+                      "Foreign Direct Investment as a percentage of Gross Fixed Capital Formation"),
+  Reason_for_Selection = c("Using CIDR formula, extreme cases of import dependency and export proficiency were expected to be addressed.", 
+                           "Internationalized patents, as the manifestation of certain patentees to protect their know-how in the global arena.", 
+                           "The measure comes from a reliable source (UNCTAD) and is widely used to assess economic relations across global economy.")
+)
+
+# Create flextable
+ft <- flextable(operationalization) %>%
+  merge_v(j = "Concept") %>%  # Merge vertical cells in the "Concept" column
+  autofit() %>%
+  align(align = "center", part = "all") %>%
+  bold(part = "header") %>%
+  theme_vanilla() %>%
+  set_caption("Operationalization of International Technological Subordination (ITS)")
+
+ft
+
+```
+
+## About the Data Retrieval (DR) and Data Processing (DP) methods
+
+The data used in this report was gathered from the following sources:
+
+1. UNCTAD's *FDI as percentage of the stock of Fixed Gross Capital Formation* (GFCF) in general (not specified by sector nor country of origin), for all countries and time periods available in the public dataset (around 211 countries and 34 years). This data was downloaded directly from the UNCTAD's Data Centre without further complications[^3];
+
+2. UNCTAD's *COMTRADE* database, for the trade operations of a few technified capital goods in the agriculture and mining sectors, for all countries and time periods available in the public dataset (around 204 countries and 35 years) Given the complexity of the business-to-business products traded in these sectors (ranging from sophisticated machines to rare raw materials), the authors decided to track a sample of key commodities that could be more easily identified as capital goods key to the sectors of interest. The download process was done through the R package *comtradr* [@comtradr], and it took around a week and a half of intermittent download through multiple free API keys.
+
+2. Google's *Patents Public Dataset*, a massive dataset contained in Google Cloud that has to be accessed through their online service BigQuery[^4] and contains detailed and tidly categorized patent registers from all around the world, from the 19th century to the present. The dataset is updated regularly and is free to access through Google's BigQuery interface, which requires a Google Cloud account and some basic knowledge of SQL. The authors prepared two queries to gather and process the data necessary for the analysis, which are available in the first appendix of this paper (see Appendix A[^5]).
+
+[^3]: Data freely available at https://unctadstat.unctad.org/datacentre/.
+
+[^4]: The private ownership (despite being open to public consultation) of the Google Patents Public Dataset reminds of the argument pointed by Varoufakis about how the tech industry is becoming a new force of rentier feudalism, where the control of the data infrastructure is a key element of power [@varoufakis2023]. 
+
+[^5]: For more information on how to access and explore the Google Patents Public Dataset, see the official documentation at https://cloud.google.com/blog/topics/public-datasets/google-patents-public-dataset-now-available-bigquery.
+
+## Technological Import Dependency Ratio (TIDR) as a proxy to logistical vulnerability
+
+The formula applied for constructing the TIDR for mining and agriculture was based on the Cereal Import Dependency Ratio (CIDR), which is a measure created by the FAO to characterize the dependency of a country on cereal imports [@faocereals2023]. The formula for the CIDR is as follows:
+
+$$
+\text{CIDR} = \left( \frac{\text{Cereal imports} - \text{Cereal exports}}{\text{Cereal production} + \text{Cereal imports} - \text{Cereal exports}} \right) \times 100
+$$
+
+Following the principle of parsimonia, we will use the CIDR formula as the foundation for the construction of the TIDR in agriculture and mining but adapted to the available data in the source, which is the full volume of trade operations (imports and exports) of specific technologies in these sectors accross the globe. Therefore, the formula for the TIDR will be as follows:
+
+$$
+\text{TIDR} = \left( \frac{\text{Technology imports} - \text{Technology exports}}{\text{Technology imports}} \right) \times 100
+$$
+
+This approach has the main advantage of being easily replicable, adaptable and interpretable, as it is based on the simple comparison of the volume of technology imports and exports in a given sector. On the other hand, it has the disadvantage of not taking into account production data, which could be relevant for a more comprehensive analysis of the technological industry emergent development in agriculture and mining; specially in a temporal dimension (because if a country develops internal technologies that are not traded internationally, its wouldn't be visible in the TIDR until said country trades that innovation globally).
+
+The trade operations gathered refer to the following technologies in the agriculture and mining sectors, whose HS codes are used to identify them in the COMTRADE database:
+
+```{r HS_table}
+
+# HS codes of interest, as defined by the European Commision in 2021
+hs_codes <- tibble(
+  HS_Code = c("841710", "842320", "842441", "842482",
+              "8427", "8428", "8429", "843031", "843039", "8432",
+              "8433", "8434", "8435", "8436", "8437", "847410",
+              "847420", "8701", "8704", "8709", "9015"),
+
+  Description = c("Furnaces and ovens for roasting, melting or other heat-treatment of ores, pyrites or of metals",
+                  "Weighing machinery (excluding balances of a sensitivity of 5 cg or better), including weight-operated counting or checking machines; weighing machine weights of all kinds",
+                  "Agricultural or horticultural sprayers",
+                  "Agricultural or horticultural appliances for projecting, dispersing or spraying liquids or powders",
+                  "Fork-lift trucks; other works trucks fitted with lifting or handling equipment",
+                  "Other lifting, handling, loading or unloading machinery (for example, lifts, escalators, conveyors, teleferics)",
+                  "Self-propelled bulldozers, angledozers, graders, levellers, scrapers, mechanical shovels, excavators, shovel loaders, tamping machines and road rollers",
+                  "Machinery for soil preparation or cultivation; lawn or sports-ground rollers",
+                  "Other machinery for soil preparation or cultivation",
+                  "Agricultural, horticultural or forestry machinery for soil preparation or cultivation; lawn or sports-ground rollers",
+                  "Harvesting or threshing machinery, including straw or fodder balers; grass or hay mowers; machines for cleaning, sorting or grading eggs, fruit or other agricultural produce, other than machinery of heading 8437",
+                  "Milking machines and dairy machinery",
+                  "Presses, crushers and similar machinery used in the manufacture of wine, cider, fruit juices or similar beverages",
+                  "Agricultural, horticultural, forestry, poultry-keeping or bee-keeping machinery, including germination plant fitted with mechanical or thermal equipment; poultry incubators and brooders",
+                  "Machines for cleaning, sorting or grading seed, grain or dried leguminous vegetables; machinery used in the milling industry or for the working of cereals or dried leguminous vegetables, other than farm-type machinery",
+                  "Machinery for sorting, screening, separating, washing, crushing, grinding, mixing or kneading earth, stone, ores or other mineral substances, in solid (including powder or paste) form",
+                  "Machinery for agglomerating, shaping or moulding solid mineral fuels, ceramic paste, unhardened cements, plastering materials or other mineral products in powder or paste form; machines for forming foundry moulds of sand",
+                  "Tractors (other than tractors of heading 8709)",
+                  "Motor vehicles for the transport of goods",
+                  "Works trucks, self-propelled, not fitted with lifting or handling equipment, of the type used in factories, warehouses, dock areas or airports for short distance transport of goods",
+                  "Surveying (including photogrammetrical surveying), hydrographic, oceanographic, hydrological, meteorological or geophysical instruments and appliances, excluding compasses; rangefinders")
+)
+
+# Apply breaks logic to the text columns
+hs_codes$Description <- add_breaks(hs_codes$Description, width = 100)
+
+ft_hscodes <- flextable(hs_codes) %>%
+  autofit() %>%
+  align(align = "center", part = "all") %>%
+  bold(part = "header") %>%
+  theme_vanilla() %>%
+  set_caption("Selected commodities for the TIDR analysis and their HS codes")
+
+ft_hscodes
+
+```
+
+We suggest that the COMTRADE dataset is a powerful tool to set the ground for an empirical analysis of the ITS in general, because it provides enough data to identify the very extremes of technological trade's dependence: net exporter countries (whose TIDR value is expected to be negative and lower than -100, because they export more technology than they import) and net importer countries (whose TIDR value is expected to be 100 or near, because they import more technology than they export) [^6].
+
+[^6]: Using the adapted FAO's cereal dependency formula interpretation.
+
+TIDR values will be considered as a proxy for a logistical kind of ITS, because it allows to identify economies whose capital accumulation is based at least at some extent on its import rather than its production. With this in consideration, the authors suggest that a TIDR value above 50 is a sign of a high dependency on technology imports.
+
+## The patent data as a proxy for an innovation and development subordination
+
+Datasets available through the World International Patents Office (WIPO) and other global stakeholders about the International Patents Systems offer valuable information about patents around the world, but these registers are not directly aggregated or ready to be analyzed in a categorical manner through their web interfaces, which means that the *surface* data isn't directly suited for analyzing inventive activity with the specific aim of this article (that is, the search for indicators of sustained hierarchies among countries in particular technologies). To gather the data necessary for the analysis (that is, at least a count of patents granted per country for agricultural and mining technologies through time), a programmatic approach is taken based on *The WIPO Patent Analytics Handbook* [@oldham2022] applied to the *Google Patents Public Dataset* [@google_patents]. Following the suggestions of the handbook, the data is gathered taking advantage of four columns offered by Google's dataset: `patent_number`, `country_code`, `publication_date`, `family_id` and `cpc_code`. Respectivelly, these columns offer the patent identifier number, the country of origin, the publication date, the patent family identifier number and the Cooperative Patent Classification (CPC) code of the patent; the latter being a classification system used to categorize patents by field and/or technology by the European Patent Office and other global stakeholders. Given the interest in looking for patents of global relevance in agriculture and mining, during the data download and processing a column is created to confirm that each observation is a patent associated with a patent family (that is, that 'family_id' isn't 0 or null).
+
+To identify the patents of interest in agriculture and mining , the CPC codes are used to filter the patents in the dataset according to the general field of appliance of the patented technology. In order to take into account the elements of the 4.0 revolution in the innovation landscape, CPC codes for data process technologies are also considered. The CPC codes identified through the search engine provided by the European Patents Office [@espacenet2024] and used for this purpose are the following:
+
+```{r CPC_table}
+
+# CPC codes of interest, as defined by the European Commision in 2024
+cpc_codes <- tibble(
+  CPC_Code = c("A01", "E21", "G05", "G06", "G08", "G11", "G16Y"),
+  Description = c("Agriculture; forestry; animal husbandry; hunting; trapping; fishing",
+                  "Earth or rock drilling; mining",
+                  "Controlling; regulating systems",
+                  "Computing; calculating or counting systems",
+                  "Signalling systems",
+                  "Information storage systems",
+                  "Information and communication technology specially adapted for the internet of things [IoT]"),
+  CPC_broad_class = c("Agriculture patents and related", 
+                      "Mining patents and related", 
+                      "Data process patents and related", 
+                      "Data process patents and related", 
+                      "Data process patents and related", 
+                      "Data process patents and related", 
+                     "Data process patents and related")
+)
+
+# Apply breaks logic to the text columns
+cpc_codes$Description <- add_breaks(cpc_codes$Description)
+
+ft_cpccodes <- flextable(cpc_codes) %>%
+  autofit() %>%
+  align(align = "center", part = "all") %>%
+  bold(part = "header") %>%
+  theme_vanilla() %>%
+  set_caption("Selected patents category for the intellectual property analysis and their CPC codes")
+
+ft_cpccodes
+
+```
+
+With this approach to patent data, the authors aim to describe global trends of intellectual property accumulation in the agriculture, mining and data processing sectors, as a way to complement the TIDR analysis and to provide a more comprehensive view of the ITS as global inequality in technified capital development.
+
+## Financial subordination through net FDI labeled as Fixed Gross Capital Formation
+
+As stated above, the stock FDI as percentage of GFCF data per year is a easily available, but rather general metric. Gross Fixed Capital Formation (GFCF) was selected as a proxy over FDI in USD because it is a more direct measure of the capital accumulation in a given country and year, for which it better suits the longitudinal perspective of this analysis. For this article, the data was processed in a similar manner to the TIDR data (that is, input - output of an economy):
+
+$$
+  \text{Net FDI as percentage of GFCF} = \left( \frac{\text{FDI inflows} - \text{FDI outflows}}{\text{GFCF}} \right)
+$$
+
+The resulting value follows a similar logic to the TIDR: positive values indicate a net inflow of FDI (that is, receiving more FDI than sending out), while negative values indicate a net outflow of FDI (that is, sending more FDI than receiving). While a net inflow isn't necessarily a sign of subordination, and the abscence of a measurement of local fixed capital financed by national investment limits the possibility to identify autarky, this ratio allows for two things: (1) to identify extreme cases of financial subordination or dominance, and (2) to keep the principles of parsimonia and data accesibility in the construction of the dataset.
+
+## Final dataset constructed for the analysis of the ITS in mining and agriculture globally
+
+To merge all datasets together into a single file that can be used for the analysis and then make it available to the public use, the authors use the years and country names as *main keys* (that is, the columns that will be used to track each case across datasets). The *countrycode* R package developed by @countrycode is used to standardize the country names across datasets, and the *dplyr* R package developed by @dplyr is used to merge and clean the datasets together. The final dataset is then exported to a *.csv* file that can be used by other researchers to replicate or further the analysis, and is available along with the necessary documentation in a public repository curated by one of the authors [^7] [@Public_ITS].
+
+[^7]: The repository is available at https://github.com/RodrigoBR1/Public_ITS.git, for further information on the data and the analysis.
+
+The composition of the final dataset is as follows:
+
+```{r final_dataset}
+
+# Load data
+ITS <- read_csv("data/ITS_v1.csv")
+
+# Office friendly tables
+## Columns available and their characteristics
+ITS_desc <- tibble(
+  Column = colnames(ITS),
+  Description = c("Year of observation",
+                  "Country of observation",
+                  "Proxy for logistical subordination (LS) in agriculture and mining",
+                  "LS related to China",
+                  "LS related to USA",
+                  "Main source of technological capital imports",
+                  "Proxy for intellectual property subordination in agriculture",
+                  "Proxy for intellectual property subordination in mining",
+                  "Proxy for intellectual property subordination in data processing",
+                  "Net FDI as percentage of GFCF",
+                  "Economy Complexity Index (ECI)",
+                  "ECI ranking within the available global economy data"),
+  Interpretation = c("Year of observation",
+                     "Country of observation",
+                     "Values closer to 100 indicate a high dependency on technology imports, negative values indicate a net exporter",
+                      "Values closer to 100 indicate a high dependency on technology imports, negative values indicate a net exporter",
+                      "Values closer to 100 indicate a high dependency on technology imports, negative values indicate a net exporter",
+                      "Main source of LS in agriculture and mining technologies",
+                      "High values indicate a high relative position in the global intellectual property system",
+                      "High values indicate a high relative position in the global intellectual property system",
+                      "High values indicate a high relative position in the global intellectual property system",
+                      "Positive values indicate a net inflow of FDI as GFCF, negative values indicate a net outflow of FDI as GFCF",
+                      "A measure of the productive capabilities of a country, higher values may indicate a more diverse (or expanded) economy",
+                      "Ranking of each country according to ECI indicator. A country in top 10 ranking can be considered as a country that its economy have expanded greatly respective to the rest of the world")
+)
+
+# Apply breaks logic to the text columns
+ITS_desc$Description <- add_breaks(ITS_desc$Description)
+ITS_desc$Interpretation <- add_breaks(ITS_desc$Interpretation)
+
+
+ft_its_desc <- flextable(ITS_desc) %>%
+  autofit() %>%
+  align(align = "center", part = "all") %>%
+  bold(part = "header") %>%
+  theme_vanilla() %>%
+  set_caption("Description of columns available in the final dataset for the analysis of the ITS in agriculture and mining")
+
+ft_its_desc
+
+```
+
+This dataset contains information for 199 countries and 34 years, but not necessarily continuous; for example, a country may have full data for TIDR but not for patents, or partial data of both (for a complete summary of the final dataset composition, see Appendix b). The authors suggest that the dataset is a powerful tool for a first approach to creating an ITS set of indicators that can be used for multiple purposes.  Among other things, the authors suggest that the dataset can be used to identify the relative position of a country in the global economy of the sectors analyzed, and to aggregate (for example, by size in USD or location of the economy) or complement the data with other sources to test hypotheses about the global development of imperialism and subordination in specific countries. In this line, ECI indicators ar added to test the capability of the ITS dataset to understand global division of labour, and other researchers are encouraged to incorporate metrics into the data set that will enrich the debate on the measurement of development in a global perspective. Therefore, the dataset wil be used to test the following hypotheses that emerge from the historical analysis behind the ITS framework.
+
+# First approach to the ITS dataset and impressions
+## Hypotheses to be tested
+
+1. **Hypothesis 1:** An international technological subordination (ITS) reproduces historical patterns of imperialism and subordination in the global economy, with certain countries that perform better in the selected indicators. In other words, it was expected that certain countries would appear closer to a "dominance" position in the GE rather than a "subordination" position, based on the mean values they've had accross time in the indicators [^8]. For this reason, the ITS indicators are expected to be related to the historical development of imperialism and subordination in the global economy, as the specialized literature on the topic indicates.
+
+
+2. **Hypothesis 2:** There must be a correlation between the indicators of the ITS, as they are all proxies for different forms of subordination in the global economy, and a correlation between these indicators and the economic complexity index (ECI) of a country, as a measure developed by @ECI_og2009 that seeks to measure the productive capabilities and / or *knowhow capital* of a country [^9]. According to the original authors of such an abstraction (that is, a number to represent and categorize countries according to their social accummulation of knowledge):
+
+[^8]: Mean values often hide the variance of the data, which in this case would be evolution of the TIDR, patent ownership and net FDI of a country through time. Nevertheless, for this paper the mean values are a good starting point to assess the relative position of a country in the global economy through time,
+
+[^9]: For a critical review of the ECI, see @ECI_crit2018.
+
+"[Knowhow capital accumulation] has not been a universal phenomenon. It has taken place in some parts of the world, but not in others. Where it has happened, it has underpinned an incredible increase in living standards. Where it has not, living standards resemble those of centuries past. The enormous income gaps between rich and poor nations are an expression of the vast differences in productive knowledge amassed by different nations." [@ECI_og2009]
+
+Therefore, the ECI is expected to be at least mildly correlated with the compiled indicators of ITS, as countries at the top of the ECI ranking are expected to be self sufficient in the production of the capital goods analyzed in the ITS dataset, to the point of being net exporters of these goods or *knowhow capital*.
+
+## First hypothesis testing
+
+*Hypothesis 1* is tested by making a multiple-lines plot (of a type commonly known as "spaggethi plots") for each indicator across each country and year, but grouped by continent. This allows to see two patterns of interest: (a) which regions of the world host the most dominant countries in the global economy, and (b) how the relative positions of countries in the global landscape has evolved through time. Therefore, below are the graphs for the three key indicators: TIDR, net GFCF and patent count. The analysis of each plot is written below it.
+
+```{r TIDR_plot, fig.cap="Figure 1: TIDR Plot"}
+
+# Load plot
+knitr::include_graphics("plots/plots-v1/TIDR_plot.png")
+
+```
+
+As shown in Figure \@ref(fig:TIDR_plot), the authors suggest to consider -100 value or lower as an indicator of a country that has become a strong net exporter of technified capital in agriculture and mining; while a 100 value or closer indicates a country that has developed a high dependency on technology imports in these sectors. 
+
+In this line, some trends are immediately evident. First, most countries in the world's regions are in a situation of dependence on imports of these capital goods (except in Europe, where the situation is a little more dynamic), insofar as most lines are concentrated on value 0 (equivalent to autarky in this context of analysis). Second, in the 30+ years of records, the tendency of the dominant countries is to lose dominance, not to previously subordinate countries, but to other dominante countries that are improving their position. A clear example of this is Asia, where Japan has seen its position as the strongest exporter in the economic sector weakened to give way to China as the most important exporter. Finally, if the -100 limit is considered as an indicator of countries that consolidate their position as net exporters, it is possible to say that in the Americas only three countries have reached this category: USA, Canada and Brazil, but only the first one has managed to maintain its position as a net exporter (although it has consistently worsened over time). Meanwhile, in Africa, no country has managed to be a net exporter of these products (even when the operations compiled consider the sale of used capital goods or those not produced in the country, which leads Kenya to have a record as a net exporter in 2004). Therefore, the real competition for global domination of the market for these capital goods is found over time between some European states (e.g. Germany, UK, Italy, Belgium or Spain), some Asian states (e.g. Japan, South Korea, India, Turkey or China) and the USA.
+
+
+```{r pats_plot, fig.cap="Figure 2: PATS Plot"}
+
+# Load plot
+knitr::include_graphics("plots/plots-v1/pat_plot.png")
+
+```
+
+By plotting the patents count added (that is, the sum of patents in agriculture, mining and data processing technologies per country), two conclussions can be drawn. First, that the main global intellectual property owners [^8] in this sector of the economy have always beenthe USA and China, with a minor participation of South Korea, Japan, Russia (just recently), Canada and Australia. Second, that this field of global power dynamics doesn't have the same historical inertia as the TIDR, because just two countries are in very dominant possitions and the rest of the world can be considered as a "subordinate" in the global intellectual property system. Given the lack of historical inertia but clear pattern, this may be well considered as an emergent form of imperialism in the global economy.
+
+[^8]: Let's remember, "family" implies patents that are in force in at least 2 countries at once (hence they are "related" as family) and allow for the inventor to protect the technology from reproduction without permission.
+
+```{r GFCF_plot}
+
+# Load plot
+knitr::include_graphics("plots/plots-v1/GFCF_plot.png")
+
+```
+
+To understand the GFCF plot, the authors suggest to consider the 0 value as an indicator of a country that has a balanced relation between FDI inflows and outflows in relation to its capital formation. Therefore, an remebering that the FDIas GFCF data is measured as percentage instead of USD, the authors also suggest to interpret a value over 100 of net GFCF as a sign of a country that is receiving more than double the FDI it is sending out in relation to its capital formation. In the other hand, a value under -100 is a sign of a country that is sending more than double the FDI it is receiving in relation to its capital formation, and therefore is able to acces a position of financial domination in the global economy by investing in other territories.
+
+First, it must be appointed that massive capital uses certain countries like bridges between economies to avoid taxes and other financial obligations according to international organizations (see @EuroParl2017 or @Oxfam2016), and this phenomena may explain why the data doesn't immediately shows the patterns previously registered (or even if it is capable of showing such patterns). For example, there are countries like Luxembourg or Cyprus that appear as huge net senders of FDI in relation to their capital formation, but to this point haven't appeared as imperialistic in the indicators nor the historical analysis (like, for example, USA or some european states). Therefore, the authors suggest that the international financial system may require a more detailed tracking of the FDI flows to identify the true territorial origin of the capital in movement; or to probe if this form of capital can even be localized at all, when transnational corporations are the ones making use of these *tax havens* that end up hiding the territorial origin of the capital.
+
+Second, of the six continents, only Europe seems to have a relatively diverse set of countries involved in investing in other territories, with a strong presence of G20 nations but also smaller economies like Switzerland or Denmark. In the rest of the world, the data suggest that some of the main net investors in the global economy currently are the Netherlands, Japan, Canada and South Africa. This considers that some countries are pointed to possibly operate as *tax havens* (like Cyprus or Luxembourg, that rank 14 and 10 in the Corporate Tax Haven Index (CTHI) by the Tax Justice Network [@CTHI2024]) and therefore shouldn't be considered in the analysis. From the main net investors recognized, Japan seems to be the only steadily growing in time, while Canada and South Africa show volatile yet very positive trends.
+
+## Second hypothesis testing - Work in progress
+
+The authors suggest that the data gathered can be aggregated into an ITS index, which can be used to compare the relative positions of selected countries in the global economy (with a focus on Agriculture and Mining capital goods and patents ownership). For the purpose of testing *hypothesis 2*, the authors decided to composite an ITS synthetic indicator [^9] as a simple additive index without weights and normalized via Min-Max method (which involves *scaling* the original value of the variable to a 0 to 1 range, in order to identify the relative position of a country compared to the mean value of the variable), following the suggestions of @OECD2008. In other words, the ITS index seeks to represent the sum of power or sovereignty (as *national power*) capital of a given country in relation to others, so a country with a value closer to 0 should be considered as an indicator of low subordination (because of a surplus in capital goods to trade, patents to privde and / or money to invest), while a country with a value closer to 100 should be considered as an indicator of high subordination (because of an excesive dependency on technology imports, a low inventive activity and / or a high dependency on foreign investment).
+
+[^9]: A synthetic indicator is a composite measure that seeks to represent a complex phenomenon through a simple formula, and it is often used in the social sciences to represent complex phenomena in a simple way. The OECD manual suggest to previously test the correlation between the variables to be aggregated, and to test the correlation between the synthetic indicator and the variables to be aggregated, to ensure the validity of the index. This process was done by the authors, and the results are presented in the Appendix C of this report, with its interpretation.
+
+To build the index, the first step was to impute values in the variables of interest through the *mice* R package (developed by @mice2021), which makes *Multiple Imputation by Chained Equations* (hence the name of the package) of a defined data set, based on iterative modeling of each variable based on observed values of the other variables (this is expected to lead to more robust and reliable estimates of missing data than simple impute through mean value of two available observations). 
+
+Then, the next step was to normalize the data using the following Min-Max formula:
+
+$$
+X_{\text{normalized}} = \frac{X - X_{\text{min}}}{X_{\text{max}} - X_{\text{min}}}
+$$
+
+Which to this point, produced a set of normalized and imputated variables along the set of original variables. The original dataset contained the following missing values structure:
+
+```{r imputation_normalization_1}
+
+# Load data
+
+ITS_imp <- read_csv("data/ITS_imp-v1.csv")
+
+#Table of missing values
+miss_val <- colSums(is.na(ITS)) / nrow(ITS) * 100
+miss_val <- tibble(
+  Variable = names(miss_val),
+  Missing = miss_val
+)
+
+qflextable(miss_val)
+
+```
+
+Despite the high percentages of missing values in the data, when it was retrieved a lot of them were either related to the vast patent count difference between countries per years (so most countries countries get a lot of missing or NA values, while a few high inventive ones have a lot of observations through a long period of time), or to countries that have poor data availability in the UNCTAD and COMTRADE databases (often poor nations). Therefore, the imputation process was done selectively just to 
+the variables of interest. Here follows density plots of the normalized and imputed data for the TIDR, patents count and net GFCF, where blue represents the original data and red represents the imputed data (purple is the overlap of both, which could be interpreted as a sign that indicates the final dataset shares a similar distribution with the original one).
+
+```{r imputation_normalization_2}
+
+# Load plots
+
+knitr::include_graphics("plots/index-v1/IDIT_dens.png")
+knitr::include_graphics("plots/index-v1/PATS_dens.png")
+knitr::include_graphics("plots/index-v1/GFCF_dens.png")
+
+```
+
+Finally, the ITS index was constructed as the average of the normalized values of the TIDR, patents count and net GFCF, and then multiplied by 100 to get a percentage value. The final formula for the ITS index is as follows:
+
+$$
+\text{ITS index} = \left( \frac{\text{IDIT}_{\text{norm}} + \text{Net GFCF}_{\text{norm}} + \left(1 - \text{Patents count}_{\text{norm}}\right)}{3} \right) \times 100
+$$
+
+Two plots to show the distribution of the ITS index across the countries and years follow, and the analysis of each plot is written below it.
+
+```{r ITS_plot1}
+
+# Load plot
+knitr::include_graphics("plots/index-v1/ITS_index_full.png")
+
+```
+
+On one hand, a view of the whole sample (199 countries and 34 years) is used to review a few key insights that the index shows and can be tracked to the previous descriptive analysis. In this plot, USA and China (the two main dominant actors throughout the data, specially in patents) clearly have the two lowest ITS index values across time, with the latter achieving a stronger position during the last decade.
+
+```{r ITS_plot2}
+
+# Load plot
+knitr::include_graphics("plots/index-v1/ITS_index_faceted.png")
+
+```
+
+With the side-to-side view of ITS distribution per continent, its clear that the synthetic indicator displays the general patterns already identified in the TIDR, patents count and net GFCF plots, with a little more softness in the distribution of the values. For example, Americas, Asia and specially Europe show more countries that are able to stay between the 0.6 - 0.5 range (which is in this context sets countries in a relatively less subordinated position in the global economy), while Africa and Oceania only have countries with values above 0.6 (that is, in a relatively more subordinated position in the global economy). It could be said that only Americas and Asia are being able to produce not-subordinated countries in the global economy in the sectors analyzed, while Europe is in a position slowly but steadily weakening its position as a dominant actor in the global economy.
+
+# A subsample of latin american countries as case study for the ITS indicators
+
+A sample of countries within Latin America is selected for an in depth analysis of the ITS indicators. The countries selected are Argentina, Brazil, Bolivia, Chile, Colombia, Mexico, Paraguay and Peru, and the analysis will be focused on describing the historical trends rather than proving subordination per se. The authors suggest this analysis as a way to show and evaluate the potential of the dataset and its construction logic for further research in the field of the ITS.
+
+The structure of this analysis is as follows: first, the authors will present the financial and *knowhow capital* data proxies (respectively, net GFCF and patents count) for the selected countries, and then the TIDR data for the same countries. The data will be displayed in longitudinal linear plots for each indicator, and the analysis will be written below each plot.
+
+## Patterns of financial and innovation stratification across the Latin American subsample
+
+```{r GFCF_LAS}
+
+# Load plot
+knitr::include_graphics("plots/plots-v2/GFCF_plot_LAS.png")
+
+```
+
+First, it could be stated that all subsampled Latin American economies are net receivers of FDI, given that all of them (except Brazil in 1990) have a positive net GFCF value; but the size of this ratio (that is, how much more FDI as percentage of local Capital is being received rather than sent by the country) changes over time and across the subregion. In one hand, Chile and Bolivia share that in the data they have always received not less than a 100% more than their are sending out as stock of Gross Fixed Capital Formation[^10], with a peak in foregin investment between approximately 1997 and 2008 slighly shared with Argentina and Peru. In the other hand, countries like Brazil, Paraguay, Mexico, and specially Peru and Colombia, show a deepening of their financial subordination in the global economy accross time, if one is to consider that an upwards trajectory in the net GFCF ratio is a sign of a country that is receiving more and more FDI in relation to its outflows of FDI. Therefore, it could be said that the data suggests that a financial subordination of the Latin American subsample as a dynamic processs, with some countries like Chile and Bolivia having a clear position as net receivers of FDI, and others like Brazil, Colombia and Peru deepening their position as net receivers of FDI.
+
+[^10]: FDI as net stock of GFCF can be a complex measure to use, but the authors suggest its number highlights two key factors in the global economy: first, the capacity of a country to attract capital from other territories (that is, allows to track stock of FDI in a country) in contrast to its capacity to invest abroad (which is represented by the sign that the result of the ratio gives); and second, the idea that FDI becomes problematic when it is at the base of the capital formation of a country, and therefore gives the investor a certain level of control over the local economy. 
+
+```{r PATS_LAS}
+
+# Load plot
+knitr::include_graphics("plots/plots-v2/pats_plot_LAS.png")
+
+```
+
+Just as in the global economy data, the Latin American subsample data shows a strata of countries that produce intellectual property in the areas of interest and other that simply don't. In this subsample, Brazil and Mexico appear as the only countries that register at least 1 year with 1000 or more internationalized patents in force, with a clear dominance of Brazil in the region; while the rest of the countries in the subsample show a very low level of inventive activity in the sectors of interest.
+
+## TIDR among selected Latin American countries: the Brazilian case
+
+```{r TIDR_LAS}
+
+# Load plot
+knitr::include_graphics("plots/plots-v2/TIDR_plot_LAS.png")
+
+```
+
+ Brazil is the only country in the selected sample that shows a pattern of lowering its dependency from the USA through time, while increasing its dependency from China. It is, also the only country that has shown clear signs of belonging to the stronger economies in the world (i.e. it the highest invention exporter in the region, the only net exporter in the subsample and the country with the most complex and financially powerful economy among the subsample), and therefore said change could be intepreted as a sign of a shift in the global economy towards China as the main exporter of technified capital goods, even among not-so-subordinated countries or *middle economies* like Brazil.
+
+## The ITS index for the Latin American subsample
+
+Analysis pending, visualizations below.
+```{r ITS_LAS}
+
+# Load plots
+knitr::include_graphics("plots/index-v1/ITS_LAS.png")
+knitr::include_graphics("plots/index-v1/ITS_ECI_LAS.png")
+
+```
+
+# Appendix A: Data Retrieval and Processing queries for the Google Patents Public Dataset
+
+SELECT 
+  publication_number AS patent_id, 
+  country_code, 
+  cpc[SAFE_OFFSET(0)].code AS patent_cpc_class, 
+  SUBSTR(CAST(publication_date AS STRING), 1, 4) AS pub_year, -- Extract year from the date
+  IF(family_id IS NOT NULL, TRUE, FALSE) AS is_global_patent -- Logical column to check family_patent_id presence
+FROM 
+  patents-public-data.patents.publications
+WHERE 
+  (cpc[SAFE_OFFSET(0)].code LIKE 'A01%' OR
+   cpc[SAFE_OFFSET(0)].code LIKE 'E21%' OR
+   cpc[SAFE_OFFSET(0)].code LIKE 'G05%' OR
+   cpc[SAFE_OFFSET(0)].code LIKE 'G06%' OR
+   cpc[SAFE_OFFSET(0)].code LIKE 'G08%' OR
+   cpc[SAFE_OFFSET(0)].code LIKE 'G11%' OR
+   cpc[SAFE_OFFSET(0)].code LIKE 'G16Y%')
+  AND family_id IS NOT NULL -- Filter rows where family_patent_id is present
+
+# Appendix B: Years of data available for each variable and country in the final dataset
+
+```{r appendix_b}	
+# Table of available countries and year with observations in each variable
+ITS_sum <- ITS %>%
+  summarize(
+    across(
+      .cols = c(IDIT, IDIT_China, IDIT_USA, agr_pat, min_pat, dat_pat, Net_GFCF, ECI),
+      .fns = ~sum(!is.na(.)),
+      .names = "{.col}_n"
+    ),
+    .by = country
+  ) %>%
+  group_by(country) %>%
+  mutate(
+    period_obs_str = paste0(min(ITS$year, na.rm = TRUE), " - ", max(ITS$year, na.rm = TRUE)),
+    period_obs_n = abs(min(ITS$year, na.rm = TRUE) - max(ITS$year, na.rm = TRUE))
+  ) %>%
+  ungroup()
+
+
+ITS_sum_tib <- tibble(
+  Country = ITS_sum$country,
+  TIDR = ITS_sum$IDIT_n,
+  "TIDR relative to China" = ITS_sum$IDIT_China_n,
+  "TIDR relative to USA" = ITS_sum$IDIT_USA_n,
+  "Agricultural patents count"= ITS_sum$agr_pat_n,
+  "Mining patents count" = ITS_sum$min_pat_n,
+  "Data processing patents count" = ITS_sum$dat_pat_n,
+  Net_FDI_GFCF = ITS_sum$Net_GFCF_n,
+  "Economy Complexity Index" = ITS_sum$ECI_n,
+  "Period with observations" = ITS_sum$period_obs_str,
+  period_obs_n = ITS_sum$period_obs_n
+) %>%
+  arrange(desc(period_obs_n)) %>%
+  select(-period_obs_n)
+
+# Number of years with data available for each indicator
+flextable(ITS_sum_tib) %>%
+  set_caption(caption = "Number is total years (not necessarily continous) with data available for each indicator")
+
+```
+
+# Appendix C: Correlation matrix between the ITS indicators and the ITS index
+
+The following correlation matrix was constructed to test the validity of the ITS index as a synthetic indicator of the subordination of a country. In each box, the correlation coefficient is presented, with the following interpretation: a value closer to 1 indicates a strong positive correlation between the two variables, a value closer to -1 indicates a strong negative correlation between the two variables, and a value closer to 0 indicates no correlation between the two variables. The interpretation of the correlation matrix is written below it.
+
+```{r appendix_c}
+
+# Load corplot
+knitr::include_graphics("plots/index-v1/corplot_ITS.png")
+
+```
+
+# References
