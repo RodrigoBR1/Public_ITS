@@ -13,29 +13,39 @@ ITS <- ITS %>%
 
 # Data exploration with brolgar package - definition of plots and countries of interest
 G20_countries <- c("Argentina", "Australia", "Brazil", "Canada", "China", "France", "Germany", "India", "Indonesia", "Italy", "Japan", "Mexico", "Russia", "Saudi Arabia", "South Africa", "South Korea", "Turkey", "United Kingdom", "United States")
-subsample_LAS <- c("Brazil", "Chile", "Argentina", "Bolivia", "Paraguay", "Colombia", "Peru", "Mexico")
+subsample_LAS <- c("Brazil", "Chile", "Argentina", "Bolivia", "Paraguay", "Colombia", "Peru", "Mexico", "Venezuela", "Nicaragua", "Uruguay")
 
 # Subsample LAS in ITS dataset
 ITS_LAS <- ITS %>% 
     filter(country %in% subsample_LAS) %>% 
     mutate(pats = agr_pat + min_pat + dat_pat)
 
+# Define unique colors and simple shapes for each country
+colors_LAS <- c("Brazil" = "blue", "Chile" = "red", "Argentina" = "green", "Bolivia" = "purple", "Paraguay" = "orange", "Colombia" = "brown", "Peru" = "pink", "Mexico" = "brown", "Venezuela" = "cyan", "Nicaragua" = "magenta", "Uruguay" = "darkgreen")
+shapes_LAS <- c("Brazil" = 16, "Chile" = 17, "Argentina" = 18, "Bolivia" = 15, "Paraguay" = 3, "Colombia" = 4, "Peru" = 16, "Mexico" = 17, "Venezuela" = 18, "Nicaragua" = 15, "Uruguay" = 3)
+
+
 # Technologies Import Dependency Ratio (TIDR), in general and relative to China and USA, per country and year in subsample of Latin American countries
-TIDR_plot_LAS <- ggplot(ITS_LAS, aes(x = year, y = IDIT, group = country, color = country)) +
-  geom_line() +
-  geom_hline(yintercept = 0, linetype = "dotted", color = "black") + # Autarky
-  geom_hline(yintercept = 50, linetype = "dotted", color = "#b81c00") + # Medium import dependency
-  geom_hline(yintercept = -100, linetype = "dotted", color = "#035000") + # High export capability
-  geom_hline(yintercept = -200, linetype = "dotted", color = "#00791a") + # Very high import capability
-  labs(
-    title = "Technologies Import Dependency Ratio (TIDR) in Latin American economies",
-    x = "Year",
-    y = "TIDR",
-    caption = "Source: UNCTADSTAT | Subsample of Latin American economies",
-    color = "Country",
-    subtitle = "Dotted lines represent: Autarky (0), Medium import dependency (50), High export capability (-100), Very high import capability (-200)"
-  ) +
-  theme_minimal()
+
+TIDR_plot_LAS <- ggplot(ITS_LAS, aes(x = year, y = IDIT, group = country, color = country, shape = country)) +
+    geom_line() +
+    geom_point(size = 3) +
+    scale_color_manual(values = colors_LAS) +
+    scale_shape_manual(values = shapes_LAS) +
+    geom_hline(yintercept = 0, linetype = "dotted", color = "black") + # Autarky
+    geom_hline(yintercept = 50, linetype = "dotted", color = "#b81c00") + # Medium import dependency
+    geom_hline(yintercept = -100, linetype = "dotted", color = "#035000") + # High export capability
+    geom_hline(yintercept = -200, linetype = "dotted", color = "#00791a") + # Very high import capability
+    labs(
+        title = "Technologies Import Dependency Ratio (TIDR) in Latin American economies",
+        x = "Year",
+        y = "TIDR",
+        caption = "Source: UNCTADSTAT | Subsample of Latin American economies",
+        color = "Country",
+        shape = "Country",
+        subtitle = "Dotted lines represent: Autarky (0), Medium import dependency (50), High export capability (-100), Very high import capability (-200)"
+    ) +
+    theme_minimal()
 
 # Save as ggplotly in "plots/plots-v2" folder
 # Convert ggplot to ggplotly for interactivity
@@ -44,30 +54,61 @@ TIDR_plot_LAS_interactive <- ggplotly(TIDR_plot_LAS)
 # Save interactive plot as HTML
 htmlwidgets::saveWidget(TIDR_plot_LAS_interactive, "plots/plots-v2/TIDR_plot_LAS_interactive.html")
 
-# Technologies Import Dependency Ratio (TIDR) for the entire ITS dataset
-TIDR_plot <- ggplot(ITS, aes(x = year, y = IDIT, group = continent, color = country)) +
-    geom_line() +
-    geom_hline(yintercept = 0, linetype = "dotted", color = "black") + # Autarky
-    geom_hline(yintercept = 50, linetype = "dotted", color = "#b81c00") + # Medium import dependency
-    geom_hline(yintercept = -100, linetype = "dotted", color = "#035000") + # High export capability
-    geom_hline(yintercept = -200, linetype = "dotted", color = "#00791a") + # Very high import capability
-    labs(
-        title = "Technologies Import Dependency Ratio (TIDR) in all economies",
-        x = "Year",
-        y = "TIDR",
-        caption = "Source: UNCTADSTAT",
-        color = "Country",
-        group = "Continent",
-        subtitle = "Dotted lines represent: Autarky (0), Medium import dependency (50), High export capability (-100), Very high import capability (-200)"
-    ) +
-    theme_minimal()
+    # Technologies Import Dependency Ratio (TIDR) relative to China in Latin American subsample
+    TIDR_China_plot_LAS <- ggplot(ITS_LAS, aes(x = year, y = IDIT_China, group = country, color = country, shape = country)) +
+        geom_line() +
+        geom_point(size = 3) +
+        scale_color_manual(values = colors_LAS) +
+        scale_shape_manual(values = shapes_LAS) +
+        geom_hline(yintercept = 0, linetype = "dotted", color = "black") + # Autarky
+        geom_hline(yintercept = 50, linetype = "dotted", color = "#b81c00") + # Medium import dependency
+        geom_hline(yintercept = -100, linetype = "dotted", color = "#035000") + # High export capability
+        geom_hline(yintercept = -200, linetype = "dotted", color = "#00791a") + # Very high import capability
+        labs(
+            title = "Technologies Import Dependency Ratio (TIDR) relative to China in Latin American economies",
+            x = "Year",
+            y = "TIDR relative to China",
+            caption = "Source: UNCTADSTAT | Subsample of Latin American economies",
+            color = "Country",
+            shape = "Country",
+            subtitle = "Dotted lines represent: Autarky (0), Medium import dependency (50), High export capability (-100), Very high import capability (-200)"
+        ) +
+        theme_minimal()
 
-# Save as ggplotly in "plots/plots-v2" folder
-# Convert ggplot to ggplotly for interactivity
-TIDR_plot_interactive <- ggplotly(TIDR_plot)
+    # Save as ggplotly in "plots/plots-v2" folder
+    # Convert ggplot to ggplotly for interactivity
+    TIDR_China_plot_LAS_interactive <- ggplotly(TIDR_China_plot_LAS)
 
-# Save interactive plot as HTML
-htmlwidgets::saveWidget(TIDR_plot_interactive, "plots/plots-v2/TIDR_plot_interactive.html")
+    # Save interactive plot as HTML
+    htmlwidgets::saveWidget(TIDR_China_plot_LAS_interactive, "plots/plots-v2/TIDR_China_plot_LAS_interactive.html")
+
+    # Technologies Import Dependency Ratio (TIDR) relative to USA in Latin American subsample
+    TIDR_USA_plot_LAS <- ggplot(ITS_LAS, aes(x = year, y = IDIT_USA, group = country, color = country, shape = country)) +
+        geom_line() +
+        geom_point(size = 3) +
+        scale_color_manual(values = colors_LAS) +
+        scale_shape_manual(values = shapes_LAS) +
+        geom_hline(yintercept = 0, linetype = "dotted", color = "black") + # Autarky
+        geom_hline(yintercept = 50, linetype = "dotted", color = "#b81c00") + # Medium import dependency
+        geom_hline(yintercept = -100, linetype = "dotted", color = "#035000") + # High export capability
+        geom_hline(yintercept = -200, linetype = "dotted", color = "#00791a") + # Very high import capability
+        labs(
+            title = "Technologies Import Dependency Ratio (TIDR) relative to USA in Latin American economies",
+            x = "Year",
+            y = "TIDR relative to USA",
+            caption = "Source: UNCTADSTAT | Subsample of Latin American economies",
+            color = "Country",
+            shape = "Country",
+            subtitle = "Dotted lines represent: Autarky (0), Medium import dependency (50), High export capability (-100), Very high import capability (-200)"
+        ) +
+        theme_minimal()
+
+    # Save as ggplotly in "plots/plots-v2" folder
+    # Convert ggplot to ggplotly for interactivity
+    TIDR_USA_plot_LAS_interactive <- ggplotly(TIDR_USA_plot_LAS)
+
+    # Save interactive plot as HTML
+    htmlwidgets::saveWidget(TIDR_USA_plot_LAS_interactive, "plots/plots-v2/TIDR_USA_plot_LAS_interactive.html")
 
 # Net GFCF in Latin American subsample against ECI
 GFCF_plot_LAS <- ggplot(ITS_LAS, 
@@ -102,6 +143,7 @@ ECI_plot_LAS <- ggplot(ITS_LAS,
 ggsave("plots/plots-v2/TIDR_plot_LAS.png", TIDR_plot_LAS, width = 12, height = 8)
 ggsave("plots/plots-v2/GFCF_plot_LAS.png", GFCF_plot_LAS, width = 12, height = 8)
 ggsave("plots/plots-v2/pats_plot_LAS.png", pats_plot_LAS, width = 12, height = 8)
+ggsave("plots/plots-v2/ECI_plot_LAS.png", ECI_plot_LAS, width = 12, height = 8)
 
 # Identify top 10 countries with lowest mean IDIT throughout the years
 top_10_lowest_IDIT <- ITS %>% 
