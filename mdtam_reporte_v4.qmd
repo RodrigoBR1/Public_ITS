@@ -1,5 +1,5 @@
 ---
-title: "Report 1.3: Empirical assesment of an *International Technological Subordination (ITS)*"
+title: "Report 1.4: Empirical assesment of an *International Technological Subordination (ITS)*"
 author: "Rodrigo BR"
 date: "`r Sys.Date()`"
 format: 
@@ -294,16 +294,9 @@ This dataset contains information for 199 countries and 34 years, but not necess
 
 1. **Hypothesis 1:** An international technological subordination (ITS) reproduces historical patterns of imperialism and subordination in the global economy, with certain countries that perform better in the selected indicators. In other words, it was expected that certain countries would appear closer to a "dominance" position in the GE rather than a "subordination" position, based on the mean values they've had accross time in the indicators [^8]. For this reason, the ITS indicators are expected to be related to the historical development of imperialism and subordination in the global economy, as the specialized literature on the topic indicates.
 
+[^8]: Mean values often hide the variance of the data, which in this case would be evolution of the TIDR, patent ownership and net FDI of a country through time. Nevertheless, for this paper the mean values are a good starting point to assess the relative position of a country in the global economy through time.
 
-2. **Hypothesis 2:** There must be a correlation between the indicators of the ITS, as they are all proxies for different forms of subordination in the global economy, and a correlation between these indicators and the economic complexity index (ECI) of a country, as a measure developed by @ECI_og2009 that seeks to measure the productive capabilities and / or *knowhow capital* of a country [^9]. According to the original authors of such an abstraction (that is, a number to represent and categorize countries according to their social accummulation of knowledge):
-
-[^8]: Mean values often hide the variance of the data, which in this case would be evolution of the TIDR, patent ownership and net FDI of a country through time. Nevertheless, for this paper the mean values are a good starting point to assess the relative position of a country in the global economy through time,
-
-[^9]: For a critical review of the ECI, see @ECI_crit2018.
-
-"[Knowhow capital accumulation] has not been a universal phenomenon. It has taken place in some parts of the world, but not in others. Where it has happened, it has underpinned an incredible increase in living standards. Where it has not, living standards resemble those of centuries past. The enormous income gaps between rich and poor nations are an expression of the vast differences in productive knowledge amassed by different nations." [@ECI_og2009]
-
-Therefore, the ECI is expected to be at least mildly correlated with the compiled indicators of ITS, as countries at the top of the ECI ranking are expected to be self sufficient in the production of the capital goods analyzed in the ITS dataset, to the point of being net exporters of these goods or *knowhow capital*.
+2. **Hypothesis 2:** Latin American economies can be understood as a peripherical or subordinate region in the global economy, based on the historical analysis developed through local Marxist Dependency Theory. In this line, it was expected that the countries in the region would have a high dependency on technology imports, a low relative position in the global intellectual property system and a net inflow of FDI in relation to their capital formation. This is based on the historical analysis of the region, which has been characterized by the extraction of raw materials and the import of capital goods, and the lack of a strong local industry that can compete in the global market. 
 
 ## First hypothesis testing
 
@@ -327,9 +320,9 @@ knitr::include_graphics("plots/plots-v1/pat_plot.png")
 
 ```
 
-The plot in Figure \@ref(fig:pats_plot) displays the count of total patents of interests (that is, the sum of patents in agriculture, mining and data processing technologies) owned per country, and from it two observations can be drawn. First, that the main global intellectual property owners [^10] in this sector of the economy have always been the USA and China, with a minor participation of South Korea, Japan, Russia (just recently), Canada and Australia. Second, that this field of global power dynamics doesn't have the same historical inertia as the TIDR (where european nations had a relatively good situation over time), because despite the top 10 most innovative countries overlap in some cases with the biggest capital goods exporters (identified through TIDR), just the USA and China are in a position clerly dominant over the rest of the world -that can be considered as a "subordinate" in the global intellectual property system. Given the lack of historical inertia (because the incredible patents boom for China starts around 2015), the authors suggest this may be well considered as an emergent form of imperialism in the global economy.
+The plot in Figure \@ref(fig:pats_plot) displays the count of total patents of interests (that is, the sum of patents in agriculture, mining and data processing technologies) owned per country, and from it two observations can be drawn. First, that the main global intellectual property owners [^9] in this sector of the economy have always been the USA and China, with a minor participation of South Korea, Japan, Russia (just recently), Canada and Australia. Second, that this field of global power dynamics doesn't have the same historical inertia as the TIDR (where european nations had a relatively good situation over time), because despite the top 10 most innovative countries overlap in some cases with the biggest capital goods exporters (identified through TIDR), just the USA and China are in a position clerly dominant over the rest of the world -that can be considered as a "subordinate" in the global intellectual property system. Given the lack of historical inertia (because the incredible patents boom for China starts around 2015), the authors suggest this may be well considered as an emergent form of imperialism in the global economy.
 
-[^10]: Which the authors suggest are the biggest owners of "patent families", as it points to patents that give ownership over innovation in at least 2 countries at the same time (hence they are "related" as family), and allow for the inventor to protect the technology from reproduction without permission (or commision).
+[^9]: Which the authors suggest are the biggest owners of "patent families", as it points to patents that give ownership over innovation in at least 2 countries at the same time (hence they are "related" as family), and allow for the inventor to protect the technology from reproduction without permission (or commision).
 
 ```{r GFCF_plot, fig.cap="Figure 3: GFCF Plot"}
 
@@ -348,53 +341,56 @@ Second, of the five continents, only Europe seems to have a relatively diverse s
 
 # A subsample of latin american countries as case study for the ITS indicators
 
-A sample of countries within Latin America is selected for an in depth analysis of the ITS indicators. The countries selected are Argentina, Brazil, Bolivia, Chile, Colombia, Mexico, Paraguay and Peru, and the analysis will be focused on describing the historical trends rather than proving subordination per se. The authors suggest this analysis as a way to show and evaluate the potential of the dataset and its construction logic for further research in the field of the ITS.
+A sample of countries within Latin America is selected for an in depth analysis of the ITS indicators and testing of the second hypothesis. The countries selected are Argentina, Brazil, Bolivia, Chile, Colombia, Nicaragua, Mexico, Paraguay, Peru, Uruguay and Venezuela, and the analysis will be focused on describing the historical trends of these countries rather than proving subordination per se. The authors suggest this analysis as a way to show and evaluate the potential of the dataset and its construction logic for further research in the field of ITS.
 
 The structure of this analysis is as follows: first, the authors will present the financial and *knowhow capital* data proxies (respectively, net GFCF and patents count) for the selected countries, and then the TIDR data for the same countries. The data will be displayed in longitudinal linear plots for each indicator, and the analysis will be written below each plot.
 
 ## Patterns of financial and innovation stratification across the Latin American subsample
 
-```{r GFCF_LAS}
+```{r GFCF_LAS, fig.cap="Figure 4: GFCF LAS Plot"}
 
 # Load plot
-knitr::include_graphics("plots/plots-v2/GFCF_plot_LAS.png")
+knitr::include_graphics("plots/plots-v3/GFCF_plot_LAS.png")
 
 ```
 
-First, it could be stated that all subsampled Latin American economies are net receivers of FDI, given that all of them (except Brazil in 1990) have a positive net GFCF value; but the size of this ratio (that is, how much more FDI as percentage of local Capital is being received rather than sent by the country) changes over time and across the subregion. In one hand, Chile and Bolivia share that in the data they have always received not less than a 100% more than their are sending out as stock of Gross Fixed Capital Formation[^10], with a peak in foregin investment between approximately 1997 and 2008 slighly shared with Argentina and Peru. In the other hand, countries like Brazil, Paraguay, Mexico, and specially Peru and Colombia, show a deepening of their financial subordination in the global economy accross time, if one is to consider that an upwards trajectory in the net GFCF ratio is a sign of a country that is receiving more and more FDI in relation to its outflows of FDI. Therefore, it could be said that the data suggests that a financial subordination of the Latin American subsample as a dynamic processs, with some countries like Chile and Bolivia having a clear position as net receivers of FDI, and others like Brazil, Colombia and Peru deepening their position as net receivers of FDI.
+First, it could be stated that all subsampled Latin American economies shown in Figure \@ref(fig:GFCF_LAS) are net receivers of FDI, given that all of them (except Brazil in 1990) have a positive net GFCF value; but the size of this ratio (that is, how much more FDI as percentage of local Capital is being received rather than sent by the country) changes over time and across the subregion, with a few nuances. 
 
-[^10]: FDI as net stock of GFCF can be a complex measure to use, but the authors suggest its number highlights two key factors in the global economy: first, the capacity of a country to attract capital from other territories (that is, allows to track stock of FDI in a country) in contrast to its capacity to invest abroad (which is represented by the sign that the result of the ratio gives); and second, the idea that FDI becomes problematic when it is at the base of the capital formation of a country, and therefore gives the investor a certain level of control over the local economy. 
+In one hand, Chile and Bolivia share that in the data they have always received not less than a 100% more than they are sending out as stock of Gross Fixed Capital Formation[^10], with a peak in foregin investment between approximately 1998 and 2008 slighly shared with Argentina, Peru, Venezuela and Nicaragua. The later became the country with most foreign investment in the last year of available data (2021). 
 
-```{r PATS_LAS}
+On the other hand, countries like Brazil, Uruguay, Paraguay, Mexico, and specially Peru and Colombia, show a deepening of their foreign financialization accross time, if one is to consider that an upwards trajectory in the net GFCF ratio is a sign of a country continously receiving more FDI in relation to static or lower outflows of FDI. Therefore, it could be said that the data suggests that a process of growing financial subordination in the Latin American subsample as a dynamic processs, with some countries like Chile and Bolivia having a clear position as net receivers of FDI with peaks in certain periods, and others like Brazil, Colombia and Peru deepening their overall position as net receivers of FDI.
+
+[^10]: FDI as net stock of GFCF can be a complex measure to use, but the authors suggest its number highlights two key factors in the global economy: first, the capacity of a country to attract capital from other territories (that is, the measure allows to track stock of FDI in a country in a given time) in contrast to its capacity to invest abroad (which is represented by the sign that the result of the ratio gives, if positive it means it receives more than gives); and second, the idea that FDI becomes problematic when it is at the base of the fixed capital of a country, and therefore gives the investor a certain level structural of control over the local economy. 
+
+```{r PATS_LAS, fig.cap="Figure 5: PATS LAS Plot"}
 
 # Load plot
-knitr::include_graphics("plots/plots-v2/pats_plot_LAS.png")
+knitr::include_graphics("plots/plots-v3/pat_plot_LAS.png")
 
 ```
 
-Just as in the global economy data, the Latin American subsample data shows a strata of countries that produce intellectual property in the areas of interest and other that simply don't. In this subsample, Brazil and Mexico appear as the only countries that register at least 1 year with 1000 or more internationalized patents in force, with a clear dominance of Brazil in the region; while the rest of the countries in the subsample show a very low level of inventive activity in the sectors of interest.
+Just as in the Global Economy data, the Figure \@ref(fig:PATS_LAS) with Latin American subsample data shows two clear groups of countries. Brazil and Mexico appear as the only countries that register at least 1 year with 1000 or more internationalized patents in force, with a clear dominance of Brazil in the region; while the rest of the countries in the subsample show a very low level of inventive activity in the sectors of interest.
 
-## TIDR among selected Latin American countries: the Brazilian case
+## TIDR among selected Latin American countries and the Brazilian case
 
-```{r TIDR_LAS}
+```{r TIDR_LAS, fig.cap="Figure 6: TIDR LAS Plot"}
 
 # Load plot
-knitr::include_graphics("plots/plots-v2/TIDR_plot_LAS.png")
+knitr::include_graphics("plots/plots-v3/TIDR_plot_LAS.png")
 
 ```
 
- Brazil is the only country in the selected sample that shows a pattern of lowering its dependency from the USA through time, while increasing its dependency from China. It is, also the only country that has shown clear signs of belonging to the stronger economies in the world (i.e. it the highest invention exporter in the region, the only net exporter in the subsample and the country with the most complex and financially powerful economy among the subsample), and therefore said change could be intepreted as a sign of a shift in the global economy towards China as the main exporter of technified capital goods, even among not-so-subordinated countries or *middle economies* like Brazil.
+ In Figure \@ref(fig:TIDR_LAS) two patterns are evident. First, the data suggests that some countries in the subsample have had high dependency on technology imports in the sectors of agriculture and mining through time, with values that are always above 50 (medium-high dependency) and in some cases near 100 (i.e. Paraguay, Peru, Venezuela, Uruguay, Nicaragua and Bolivia). Second, there are a set of countries composed by Colombia, Chile, Mexico and Argentina that have had a more dynamic relationship with technology imports, registering values below 50 in some years and (specially the last two).
+ 
+```{r TIDR_BRA, fig.cap="Figure 7: TIDR BRA Plot"}
 
-## The ITS index for the Latin American subsample
+# Load plot
+knitr::include_graphics("plots/plots-v3/TIDR_Brazil_plot_LAS.png")
 
-Analysis pending, visualizations below.
-```{r ITS_LAS}
-
-# Load plots
-knitr::include_graphics("plots/index-v1/ITS_LAS.png")
-knitr::include_graphics("plots/index-v1/ITS_ECI_LAS.png")
 
 ```
+
+Brazil's data in Figure \@ref(fig:TIDR_BRA) is the only in the Latin American subsample that shows a dramatic change over time, showing that the country once was a very highly capable exporter of these technologies that have seen its capability contracted in in the global technified capital market through time (although between 2001 and 2005 it showed signs of improvement). To the authors, this is a sign of a country that has lost some of its capacity to produce and trade these technologies, and therefore should be further explored as a case of a kind of *middle economy* that, even when it has a strong local industry compared to its neighbors, still gets weakened in the global economy of technified capital.
 
 # Appendix A: Data Retrieval and Processing queries for the Google Patents Public Dataset
 
@@ -456,17 +452,6 @@ ITS_sum_tib <- tibble(
 # Number of years with data available for each indicator
 flextable(ITS_sum_tib) %>%
   set_caption(caption = "Number is total years (not necessarily continous) with data available for each indicator")
-
-```
-
-# Appendix C: Correlation matrix between the ITS indicators and the ITS index
-
-The following correlation matrix was constructed to test the validity of the ITS index as a synthetic indicator of the subordination of a country. In each box, the correlation coefficient is presented, with the following interpretation: a value closer to 1 indicates a strong positive correlation between the two variables, a value closer to -1 indicates a strong negative correlation between the two variables, and a value closer to 0 indicates no correlation between the two variables. The interpretation of the correlation matrix is written below it.
-
-```{r appendix_c}
-
-# Load corplot
-knitr::include_graphics("plots/index-v1/corplot_ITS.png")
 
 ```
 
