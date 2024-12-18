@@ -344,76 +344,7 @@ First, it must be appointed that massive private capital uses certain countries 
 
 Second, of the five continents, only Europe seems to have a relatively diverse set of countries involved in investing in other territories, with a strong presence of G20 nations but also smaller economies like Switzerland or Denmark. In the rest of the world, the data suggest that some of the main net investors in the global economy currently are the Netherlands, Japan, Canada and South Africa. This considers that some countries are pointed to possibly operate as *tax havens* (like Cyprus or Luxembourg, that rank 14 and 10 in the Corporate Tax Haven Index (CTHI) by the Tax Justice Network [@CTHI2024]) and therefore shouldn't be considered in the analysis; or be considered as *administrative centers* for the economic power of global corporations, and therefore should be observed in detail as key nation-states that intertwine with imperialistic dynamics performed by privately owned capital. From the main net investors recognized, Japan seems to be the only steadily but slowly growing in time, while Canada and South Africa show volatile yet very positive trends.
 
-## Second hypothesis testing - Work in progress
-
-The authors suggest that the data gathered can be aggregated into an ITS index, which can be used to compare the relative positions of selected countries in the global economy (with a focus on Agriculture and Mining capital goods and patents ownership). For the purpose of testing *hypothesis 2*, the authors decided to composite an ITS synthetic indicator [^11] as a simple additive index without weights and normalized via Min-Max method (which involves *scaling* the original value of the variable to a 0 to 1 range, in order to identify the relative position of a country compared to the mean value of the variable), following the suggestions of @OECD2008. In other words, the ITS index seeks to represent the sum of power or sovereignty (as *national power*) capital of a given country in relation to others, so a country with a value closer to 0 should be considered as an indicator of low subordination (because of a surplus in capital goods to trade, patents to privde and / or money to invest), while a country with a value closer to 100 should be considered as an indicator of high subordination (because of an excesive dependency on technology imports, a low inventive activity and / or a high dependency on foreign investment).
-
-[^11]: A synthetic indicator is a composite measure that seeks to represent a complex phenomenon through a simple formula, and it is often used in the social sciences to represent complex phenomena in a simple way. The OECD manual suggest to previously test the correlation between the variables to be aggregated, and to test the correlation between the synthetic indicator and the variables to be aggregated, to ensure the validity of the index. This process was done by the authors, and the results are presented in the Appendix C of this report, with its interpretation.
-
-To build the index, the first step was to impute values in the variables of interest through the *mice* R package (developed by @mice2021), which makes *Multiple Imputation by Chained Equations* (hence the name of the package) of a defined data set, based on iterative modeling of each variable based on observed values of the other variables (this is expected to lead to more robust and reliable estimates of missing data than simple impute through mean value of two available observations). 
-
-Then, the next step was to normalize the data using the following Min-Max formula:
-
-$$
-X_{\text{normalized}} = \frac{X - X_{\text{min}}}{X_{\text{max}} - X_{\text{min}}}
-$$
-
-Which to this point, produced a set of normalized and imputated variables along the set of original variables. The original dataset contained the following missing values structure:
-
-```{r imputation_normalization_1}
-
-# Load data
-
-ITS_imp <- read_csv("data/ITS_imp-v1.csv")
-
-#Table of missing values
-miss_val <- colSums(is.na(ITS)) / nrow(ITS) * 100
-miss_val <- tibble(
-  Variable = names(miss_val),
-  Missing = miss_val
-)
-
-qflextable(miss_val)
-
-```
-
-Despite the high percentages of missing values in the data, when it was retrieved a lot of them were either related to the vast patent count difference between countries per years (so most countries countries get a lot of missing or NA values, while a few high inventive ones have a lot of observations through a long period of time), or to countries that have poor data availability in the UNCTAD and COMTRADE databases (often poor nations). Therefore, the imputation process was done selectively just to the variables of interest. Here follows density plots of the normalized and imputed data for the TIDR, patents count and net GFCF, where blue represents the original data and red represents the imputed data (purple is the overlap of both, which could be interpreted as a sign that indicates the final dataset shares a similar distribution with the original one).
-
-```{r imputation_normalization_2}
-
-# Load plots
-
-knitr::include_graphics("plots/index-v1/IDIT_dens.png")
-knitr::include_graphics("plots/index-v1/PATS_dens.png")
-knitr::include_graphics("plots/index-v1/GFCF_dens.png")
-
-```
-
-Finally, the ITS index was constructed as the average of the normalized values of the TIDR, patents count and net GFCF, and then multiplied by 100 to get a percentage value. The final formula for the ITS index is as follows:
-
-$$
-\text{ITS index} = \left( \frac{\text{IDIT}_{\text{norm}} + \text{Net GFCF}_{\text{norm}} + \left(1 - \text{Patents count}_{\text{norm}}\right)}{3} \right) \times 100
-$$
-
-Two plots to show the distribution of the ITS index across the countries and years follow, and the analysis of each plot is written below it.
-
-```{r ITS_plot1}
-
-# Load plot
-knitr::include_graphics("plots/index-v1/ITS_index_full.png")
-
-```
-
-On one hand, a view of the whole sample (199 countries and 34 years) is used to review a few key insights that the index shows and can be tracked to the previous descriptive analysis. In this plot, USA and China (the two main dominant actors throughout the data, specially in patents) clearly have the two lowest ITS index values across time, with the latter achieving a stronger position during the last decade.
-
-```{r ITS_plot2}
-
-# Load plot
-knitr::include_graphics("plots/index-v1/ITS_index_faceted.png")
-
-```
-
-With the side-to-side view of ITS distribution per continent, its clear that the synthetic indicator displays the general patterns already identified in the TIDR, patents count and net GFCF plots, with a little more softness in the distribution of the values. For example, Americas, Asia and specially Europe show more countries that are able to stay between the 0.6 - 0.5 range (which is in this context sets countries in a relatively less subordinated position in the global economy), while Africa and Oceania only have countries with values above 0.6 (that is, in a relatively more subordinated position in the global economy). It could be said that only Americas and Asia are being able to produce not-subordinated countries in the global economy in the sectors analyzed, while Europe is in a position slowly but steadily weakening its position as a dominant actor in the global economy.
+## Second hypothesis testing
 
 # A subsample of latin american countries as case study for the ITS indicators
 
