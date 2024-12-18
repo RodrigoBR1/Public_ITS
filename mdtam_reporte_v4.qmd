@@ -76,6 +76,11 @@ operationalization <- data.frame(
                            "The measure comes from a reliable source (UNCTAD) and is widely used to assess economic relations across global economy.")
 )
 
+# Apply breaks logic to the text columns
+operationalization$Dimension <- add_breaks(operationalization$Dimension)
+operationalization$Empirical_Proxy <- add_breaks(operationalization$Empirical_Proxy)
+operationalization$Reason_for_Selection <- add_breaks(operationalization$Reason_for_Selection)
+
 # Create flextable
 ft <- flextable(operationalization) %>%
   merge_v(j = "Concept") %>%  # Merge vertical cells in the "Concept" column
