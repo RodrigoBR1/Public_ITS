@@ -84,11 +84,11 @@ operationalization$Reason_for_Selection <- add_breaks(operationalization$Reason_
 # Create flextable
 ft <- flextable(operationalization) %>%
   merge_v(j = "Concept") %>%  # Merge vertical cells in the "Concept" column
-  autofit() %>%
   align(align = "center", part = "all") %>%
   bold(part = "header") %>%
   theme_vanilla() %>%
-  set_caption("Operationalization of International Technological Subordination (ITS)")
+  set_caption("Operationalization of International Technological Subordination (ITS)") %>%
+  autofit()
 
 ft
 
@@ -164,11 +164,11 @@ hs_codes <- tibble(
 hs_codes$Description <- add_breaks(hs_codes$Description, width = 100)
 
 ft_hscodes <- flextable(hs_codes) %>%
-  autofit() %>%
   align(align = "center", part = "all") %>%
   bold(part = "header") %>%
   theme_vanilla() %>%
-  set_caption("Selected commodities for the TIDR analysis and their HS codes")
+  set_caption("Selected commodities for the TIDR analysis and their HS codes") %>%
+  autofit()
 
 ft_hscodes
 
@@ -211,11 +211,11 @@ cpc_codes <- tibble(
 cpc_codes$Description <- add_breaks(cpc_codes$Description)
 
 ft_cpccodes <- flextable(cpc_codes) %>%
-  autofit() %>%
   align(align = "center", part = "all") %>%
   bold(part = "header") %>%
   theme_vanilla() %>%
-  set_caption("Selected patents category for the intellectual property analysis and their CPC codes")
+  set_caption("Selected patents category for the intellectual property analysis and their CPC codes") %>%
+  autofit()
 
 ft_cpccodes
 
@@ -282,11 +282,11 @@ ITS_desc$Interpretation <- add_breaks(ITS_desc$Interpretation)
 
 
 ft_its_desc <- flextable(ITS_desc) %>%
-  autofit() %>%
   align(align = "center", part = "all") %>%
   bold(part = "header") %>%
   theme_vanilla() %>%
-  set_caption("Description of columns available in the final dataset for the analysis of the ITS in agriculture and mining")
+  set_caption("Description of columns available in the final dataset for the analysis of the ITS in agriculture and mining") %>%
+  autofit()
 
 ft_its_desc
 
@@ -456,7 +456,8 @@ ITS_sum_tib <- tibble(
 
 # Number of years with data available for each indicator
 flextable(ITS_sum_tib) %>%
-  set_caption(caption = "Number is total years (not necessarily continous) with data available for each indicator")
+  set_caption(caption = "Number is total years (not necessarily continous) with data available for each indicator") %>%
+  autofit()
 
 ```
 
