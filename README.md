@@ -2,9 +2,9 @@
 
 Hi,
 
-I hope you are doing well. At the moment, this repository ("repo") is curated solely by me (Rodrigo), so for any inquires about the data and its use please feel free to reach me. My current work e-mail is [rodrigo.brito@mail.udp.cl](rodrigo.brito@mail.udp.cl), please state "ITS repository" in the subject so I can answer as soon as possible in case of an issue related to data quality.
+I hope you are doing well. At the moment, this repository ("repo") is curated solely by me (Rodrigo), so for any inquires about the data and its use please feel free to reach me. My current work e-mail is [rodrigo.brito@mail.udp.cl](rodrigo.brito@mail.udp.cl), please state "ITS repository" in the subject so I can answer as soon as possible in case of an issue related to data quality..
 
-This repo contains two folders:
+This repo contains a document called "Appendix B" containing a description of how the ITS dataset was built, and two folders:
 
 1. **data,** which contains **the final dataset** compiled by the authors for the research paper;
 2. **plots**, which contains various plots made to create and explore the dataset, as well as for testing the International Technological Subordination (ITS) theoretical framework. The *plots* folder contains 5 subfolders:
@@ -13,3 +13,4 @@ This repo contains two folders:
    3. **plots-v2**, contains basically the same structure of the plots in v1, but more detailed (for example, there are plots for Latin American (LAS) countries and top 10 or *most dominant* countries in the Global Economy). In this step of the data process, efforts were made for a last minute idea to search for a proxy to try picture the near future of the ITS dynamics in the world. This idea was quickly discarded, test can be found in the *plots-v2.r* file
    4. **plots-v3**, contains the final plots used (and some unused) for the LAS analysis in the paper.
    5. **pre-plots**, contains some miscellaneous test run with the objective of finding/displaying tendencies or patterns in the data. Efforts to plot some data as *.gif* were made, but discarded.
+
