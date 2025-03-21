@@ -1,0 +1,50 @@
+HS_Code,Description,Category
+841710,"Furnaces and ovens for roasting, melting or other heat-treatment of ores, pyrites or of metals",Mining
+842320,"Weighing machinery (excluding balances of a sensitivity of 5 cg or better), including weight-operated counting or checking machines; weighing machine weights of all kinds",Logistics
+842441,Agricultural or horticultural sprayers,Agriculture
+842482,"Agricultural or horticultural appliances for projecting, dispersing or spraying liquids or powders",Agriculture
+8427,Fork-lift trucks; other works trucks fitted with lifting or handling equipment,Logistics
+8428,"Other lifting, handling, loading or unloading machinery (for example, lifts, escalators, conveyors, teleferics)",Logistics
+8429,"Self-propelled bulldozers, angledozers, graders, levellers, scrapers, mechanical shovels, excavators, shovel loaders, tamping machines and road rollers",Logistics
+843031,Machinery for soil preparation or cultivation; lawn or sports-ground rollers,Agriculture
+843039,Other machinery for soil preparation or cultivation,Agriculture
+8432,"Agricultural, horticultural or forestry machinery for soil preparation or cultivation; lawn or sports-ground rollers",Agriculture
+8433,"Harvesting or threshing machinery, including straw or fodder balers; grass or hay mowers; machines for cleaning, sorting or grading eggs, fruit or other agricultural produce, other than machinery of heading 8437",Agriculture
+8434,Milking machines and dairy machinery,Agriculture
+8435,"Presses, crushers and similar machinery used in the manufacture of wine, cider, fruit juices or similar beverages",Agriculture
+8436,"Agricultural, horticultural, forestry, poultry-keeping or bee-keeping machinery, including germination plant fitted with mechanical or thermal equipment; poultry incubators and brooders",Agriculture
+8437,"Machines for cleaning, sorting or grading seed, grain or dried leguminous vegetables; machinery used in the milling industry or for the working of cereals or dried leguminous vegetables, other than farm-type machinery",Agriculture
+847410,"Machinery for sorting, screening, separating, washing, crushing, grinding, mixing or kneading earth, stone, ores or other mineral substances, in solid (including powder or paste) form",Mining
+847420,"Machinery for agglomerating, shaping or moulding solid mineral fuels, ceramic paste, unhardened cements, plastering materials or other mineral products in powder or paste form; machines for forming foundry moulds of sand",Mining
+8701,Tractors (other than tractors of heading 8709),Logistics
+8704,Motor vehicles for the transport of goods,Logistics
+8709,"Works trucks, self-propelled, not fitted with lifting or handling equipment, of the type used in factories, warehouses, dock areas or airports for short distance transport of goods",Logistics
+9015,"Surveying (including photogrammetrical surveying), hydrographic, oceanographic, hydrological, meteorological or geophysical instruments and appliances, excluding compasses; rangefinders",Logistics
+8401,Nuclear reactor; unirradiated fuel element (heat release element) of nuclear reactor; isotope separation machine and devide; other internal components,Nuclear
+8402,Steam boiler (except for hot water boilers for central heating that can generate low-preassure steam); superheated water boiler,Nuclear
+8404,"Boiler auxiliary equipment (for example, economizer, superheater, ash remover, gas recovery); condenser for steam or steam power plant",Nuclear
+841950,Nuclear reactor dedicated heat exchanger; steam generator (dedicated to the generation of heat in a nuclear reactor into steam),Nuclear
+841239,Other pneumatic power units,Wind
+850231,Wind power equipment,Wind
+850300,Wind power equipment parts,Wind
+903289,Wind power equipment controller,Wind
+722840,Forging tool round steel (mainly used for wind energy),Wind
+853710,Wind energy controller,Wind
+841480,Air compressor accesories (air duct),Wind
+841490,"Air compressor parts (impellers, blades, etc.)",Wind
+392099,Plastic sound board on the wind blade,Wind
+854140,Solar cell; light emitting diode; other photosensitive semiconductor device,Solar
+850239,Generator set that relies on renewable energy (RE) to produce electricity,Solar
+841919,Solar water heaters,Solar
+850440,"Solar inverter, converter, regulated power supply",Solar
+854370,Solar power station,Solar
+850720,Lead-acid cell for solar energy,Solar
+940540,Solar-related lighting device,Solar
+901390,Solar heliostat parts,Solar
+280461,Polysilicon,Solar
+440130,"Sawdust, waste and other biomass",Biomass
+841620,"Gas burners, burners, etc.",Biomass
+850220,"Natural gas power generation unit, generator",Biomass
+8405,"Gas, acetylene and similar hydrolyzed gas generators",Biomass
+847930,"Granulator; wood extruder; biomass mill, etc.",Biomass
+840790,Biogas engine,Biomass
