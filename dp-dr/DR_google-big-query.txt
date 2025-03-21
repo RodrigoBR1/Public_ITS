@@ -1,0 +1,20 @@
+Query developed in 18-11-2024 by Rodrigo BR
+
+SELECT 
+  publication_number AS patent_id, 
+  country_code, 
+  cpc[SAFE_OFFSET(0)].code AS patent_cpc_class, 
+  SUBSTR(CAST(publication_date AS STRING), 1, 4) AS pub_year, -- Extract year from the date
+  IF(family_id IS NOT NULL, TRUE, FALSE) AS is_global_patent -- Logical column to check family_patent_id presence
+FROM 
+  patents-public-data.patents.publications
+WHERE 
+  (cpc[SAFE_OFFSET(0)].code LIKE 'A01%' OR
+   cpc[SAFE_OFFSET(0)].code LIKE 'E21%' OR
+   cpc[SAFE_OFFSET(0)].code LIKE 'G05%' OR
+   cpc[SAFE_OFFSET(0)].code LIKE 'G06%' OR
+   cpc[SAFE_OFFSET(0)].code LIKE 'G08%' OR
+   cpc[SAFE_OFFSET(0)].code LIKE 'G11%' OR
+   cpc[SAFE_OFFSET(0)].code LIKE 'G16Y%') OR
+   cpc[SAFE_OFFSET(0)].code LIKE 'Y02E%' OR
+  AND family_id IS NOT NULL -- Filter rows where family_patent_id is present

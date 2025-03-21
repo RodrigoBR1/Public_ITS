@@ -1,0 +1,25 @@
+Query developed by Rodrigo BR 18-11-2024
+
+SELECT 
+  pub_year, 
+  country_code, 
+  CASE 
+    WHEN patent_cpc_class LIKE 'A01%' THEN 'Agriculture related'
+    WHEN patent_cpc_class LIKE 'E21%' THEN 'Mining related'
+    WHEN patent_cpc_class LIKE 'G%' THEN 'Data process related'
+    WHEN patent_cpc_class LIKE 'Y02E%' THEN 'Energy related'
+    ELSE 'Other'  -- If it doesn't match any of the specified patterns
+  END AS cpc_broad_class, 
+  COUNT(*) AS patent_count  -- Count the number of patents in each group
+FROM 
+  `tensile-medium-441815-a2.patents_mdtam.patents_mdtam_raw`  -- Replace with your actual table name
+GROUP BY 
+  pub_year, 
+  country_code, 
+  cpc_broad_class  -- Group by the broad CPC class
+ORDER BY 
+  pub_year, 
+  country_code, 
+  cpc_broad_class  -- Optional: order by the grouping columns
+
+
