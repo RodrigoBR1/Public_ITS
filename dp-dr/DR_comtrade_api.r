@@ -19,18 +19,20 @@ countries <- comtradr::country_codes %>%
     pull(iso_3) %>%
     unique()
 period <- 1962:2023
-pkey_UNCT <- "0e8a0d54554145c395628c5eac307ed9" # Free suscription to UN COMTRADE's API
-alt1_pkey_UNCT <- "34b3c76f5a674bd79308925c5a3c6789" # Alternative free suscription to UN COMTRADE's API
-alt2_pkey_UNCT <- "2430cde55e69441fb2e384838293a51c" # Alternative free suscription to UN COMTRADE's API
-alt3_pkey_UNCT <- "79012f273af246b994413c41a886d44d" # Alternative free suscription to UN COMTRADE's API
-alt4_pkey_UNCT <- "8a13cf9ba8f54bef8d8cf54c3e0d4055" # Alternative free suscription to UN COMTRADE's API
-alt5_pkey_UNCT <- "9b09a915d82f4f91b7156e532d8a9512" # Alternative free suscription to UN COMTRADE's API
-alt6_pkey_UNCT <- "8e9f3466968f449c9b0dafeb0584266b" # Alternative free suscription to UN COMTRADE's API
-alt7_pkey_UNCT <- "c58f9bf252154b909c1059cb9d09fdb0" # Alternative free suscription to UN COMTRADE's API
-alt8_pkey_UNCT <- "4f36924c0b3d4d2ebf5e77633d79c3de" # Alternative free suscription to UN COMTRADE's API
-alt9_pkey_UNCT <- "3c690013d4a444b5b4ef46a3294ce9d5" # Alternative free suscription to UN COMTRADE's API
-alt10_pkey_UNCT <- "db0991b1d9144677930130a9b9bbe52c" # Alternative free suscription to UN COMTRADE's API
-alt11_pkey_UNCT <- "0e6146e4ed7b430298fabcc1a8c8f5e8" # Alternative free suscription to UN COMTRADE's API
+
+# API keys used in this section are provided by the researcher and volunteers providing alternatives
+pkey_UNCT <- "" # Free suscription to UN COMTRADE's API
+alt1_pkey_UNCT <- "" # Alternative free suscription to UN COMTRADE's API
+alt2_pkey_UNCT <- "" # Alternative free suscription to UN COMTRADE's API
+alt3_pkey_UNCT <- "" # Alternative free suscription to UN COMTRADE's API
+alt4_pkey_UNCT <- "" # Alternative free suscription to UN COMTRADE's API
+alt5_pkey_UNCT <- "" # Alternative free suscription to UN COMTRADE's API
+alt6_pkey_UNCT <- "" # Alternative free suscription to UN COMTRADE's API
+alt7_pkey_UNCT <- "" # Alternative free suscription to UN COMTRADE's API
+alt8_pkey_UNCT <- "" # Alternative free suscription to UN COMTRADE's API
+alt9_pkey_UNCT <- "" # Alternative free suscription to UN COMTRADE's API
+alt10_pkey_UNCT <- "" # Alternative free suscription to UN COMTRADE's API
+alt11_pkey_UNCT <- "" # Alternative free suscription to UN COMTRADE's API
 
 combinations <- expand.grid(
             reporter = split(countries, ceiling(seq_along(countries) / 6)),
